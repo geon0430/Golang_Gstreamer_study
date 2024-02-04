@@ -2,25 +2,34 @@ package main
 
 import (
 	"log"
-	"github.com/your/gstreamer-go"
+	"os"
+	"os/signal"
+	"syscall"
+
+	gst "github.com/go-gst/go-gst"
 )
 
 func main() {
-	err := gstreamer.Init()
-	if err != nil {
-		log.Fatal("Failed to initialize GStreamer:", err)
+	if err := gst.Init(); err != nil {
+		log.Fatalf("failed to initialize gst: %v", err)
 	}
 
-	pipelineStr := "rtspsrc location=rtp://YOUR_RTPS_ADDRESS ! decodebin ! autovideosink"
-	pipeline, err := gstreamer.ParseLaunch(pipelineStr)
+	pipeline, err := gst.ParseLaunch("udpsrc port=5000 caps=\"application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264\" ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink")
 	if err != nil {
-		log.Fatal("Failed to create pipeline:", err)
+		log.Fatalf("failed to create pipeline: %v", err)
 	}
 
-	err = pipeline.SetState(gstreamer.StatePlaying)
-	if err != nil {
-		log.Fatal("Failed to set pipeline to playing state:", err)
+	if err := pipeline.SetState(gst.StatePlaying); err != nil {
+		log.Fatalf("failed to set pipeline state to playing: %v", err)
 	}
 
-	gstreamer.MainLoopRun()
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		pipeline.SetState(gst.StateNull)
+		os.Exit(0)
+	}()
+
+	gst.MainLoopRun()
 }
