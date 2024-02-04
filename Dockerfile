@@ -11,12 +11,12 @@ ENV XDG_RUNTIME_DIR "/tmp"
 RUN python3 -m pip install --upgrade pip
 
 WORKDIR /
-RUN mkdir -p /go_vms
-COPY . /go_vms
+RUN mkdir -p /Golang_Gstreamer
+COPY . /Golang_Gstreamer
 
-RUN bash /go_vms/setting-scripts/install_dependencies.sh
+RUN bash /Golang_Gstreamer/setting_scripts/install_dependencies.sh
 
-RUN bash /go_vms/setting-scripts/install_golang.sh
+RUN bash /Golang_Gstreamer/setting_scripts/install_golang.sh
 
 ARG PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
@@ -29,20 +29,8 @@ ENV PATH=/go/bin:/usr/local/go/bin:$PATH
 ENV GOROOT=/usr/local/go
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"
 
-RUN bash /go_vms/setting-scripts/install_ffmpeg.sh
+RUN bash /Golang_Gstreamer/setting_scripts/install_ffmpeg.sh
 
-RUN bash /go_vms/setting-scripts/install_OpenCV.sh
+RUN bash /Golang_Gstreamer/setting_scripts/install_OpenCV.sh
 
-# RUN apt-get update && apt-get install -y sudo
-# RUN mkdir -p "$GOPATH/src/gocv.io/x/"
-# RUN cd "$GOPATH/src/gocv.io/x/" && \
-#     git clone https://github.com/hybridgroup/gocv.git && \
-#     cd gocv && \
-#     go run ./cmd/version/main.go
-#         cd gocv && \
-#         make install_cuda BUILD_SHARED_LIBS=OFF
-
-#RUN bash /go_vms/setting-scripts/install_gocv.sh
-#RUN bash /go_vms/setting-scripts/install_gst.sh
-
-#RUN /bin/bash -c "ldconfig"
+RUN apt-get update && apt-get install -y sudo
