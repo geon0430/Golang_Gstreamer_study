@@ -1,11 +1,9 @@
 #!/bin/bash/
 
-port_num="2"
-CONTAINER_NAME="geon_go_vms_ffmpeg"
-IMAGE_NAME="hub.inbic.duckdns.org/dev-1-team/go_vms"
-TAG="goCuda_FFmpeg-0.1"
-
-port_num="2"
+port_num="4"
+CONTAINER_NAME="golang-gstreamer"
+IMAGE_NAME="golang_gstreamer"
+TAG="test-0.1"
 go_vms_path=$(pwd)
 
 docker run \
@@ -26,8 +24,7 @@ docker run \
     --name ${CONTAINER_NAME} \
     --privileged \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v /home/inbic/geon:/go_vms \
-    -v ${go_vms_path}//go_vms/ \
+  -v /home/geon/Documents/code_data/Golang_Gstreamer:/Golang_gstreamer
     -e DISPLAY=$DISPLAY \
     --shm-size 5g \
     --restart=always \
