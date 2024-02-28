@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-    url := "rtsp://admin:qazwsx123!@192.168.10.71/0/1080p/media.smp"
+    url := "rtsp://admin:qazwsx123!@192.168.10.70/0/1080p/media.smp"
 
     cap, err := gocv.OpenVideoCapture(url)
     if err != nil {
