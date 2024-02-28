@@ -1,14 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"github.com/notedit/gst"
+	"log"
+	"os"
+	"os/exec"
 )
 
 func main() {
-	gst.Init(nil)
+	cmd := exec.Command("gst-launch-1.0", "--version")
+	cmd.Stdout = os.Stdout
 
-	version := gst.GetVersion()
-
-	fmt.Printf("GStreamer version: %s\n", version)
+	err := cmd.Run()
+	if err != nil {
+		log.Fatalf("Error starting command: %v", err)
+		return
+	}
 }

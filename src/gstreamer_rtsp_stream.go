@@ -14,7 +14,7 @@ func main() {
 		log.Fatalf("failed to initialize gst: %v", err)
 	}
 
-	pipeline, err := gst.ParseLaunch("udpsrc port=9000 caps=\"application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264\" ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink")
+	pipeline, err := gst.ParseLaunch("udpsrc port=8444 caps=\"application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264\" ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink")
 	if err != nil {
 		log.Fatalf("failed to create pipeline: %v", err)
 	}
